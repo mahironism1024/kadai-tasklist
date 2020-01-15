@@ -4,7 +4,7 @@
     <%= f.label :content, "タスク" %>
     <%= f.text_field :content %>
     
-    <%= f.submit "登録" %>
+    <%= f.submit "登録", data: {confirm: "編集内容を登録してよろしいですか？"} %>
 <% end %>
 
 <%= link_to "タスク一覧に戻る", tasks_path %>
