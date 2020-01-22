@@ -1,8 +1,12 @@
 class TasksController < ApplicationController
+    before_action :require_user_logged_in
     before_action :set_task, only: [:show, :edit, :update, :destroy]
     
     def index
-        @tasks = Task.all.page(params[:page]).per(20)
+        if logged_in?
+            @task = current_user.tasks.build
+            @tasks = current_user.tasks.order(id: :desc).page(params[:page]).per(10)
+        end
     end
     
     def show
@@ -13,11 +17,11 @@ class TasksController < ApplicationController
     end
     
     def create
-        @task = Task.new(message_params)
+        @task = current_user.tasks.build(message_params)
         
         if @task.save
             flash[:success] = "タスクの登録が完了しました"
-            redirect_to tasks_path
+            redirect_to root_url
         else
             flash.now[:faild] = "タスクの登録に失敗しました"
             render :new
