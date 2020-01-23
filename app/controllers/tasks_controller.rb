@@ -1,6 +1,7 @@
 class TasksController < ApplicationController
     before_action :require_user_logged_in
     before_action :set_task, only: [:show, :edit, :update, :destroy]
+    before_action :access_controller, only: [:show, :edit]
     
     def index
         if logged_in?
@@ -10,10 +11,6 @@ class TasksController < ApplicationController
     end
     
     def show
-        unless @current_user.id == @task.user_id
-            flash[:danger] = "他ユーザーのタスクにはアクセスできません。"
-            redirect_to root_url
-        end
     end
     
     def new
@@ -58,6 +55,13 @@ class TasksController < ApplicationController
         @task = Task.find_by(id: params[:id])
         if @task == nil
             flash[:danger] = "存在しないタスクが選択されました。"
+            redirect_to root_url
+        end
+    end
+    
+    def access_controller
+        unless @current_user.id == @task.user_id
+            flash[:danger] = "他ユーザーのタスクはアクセスできません。"
             redirect_to root_url
         end
     end
