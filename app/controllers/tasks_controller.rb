@@ -10,6 +10,9 @@ class TasksController < ApplicationController
     end
     
     def show
+        unless @current_user.id == @task.user_id
+            redirect_to root_url
+        end
     end
     
     def new
