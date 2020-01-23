@@ -11,6 +11,7 @@ class TasksController < ApplicationController
     
     def show
         unless @current_user.id == @task.user_id
+            flash[:danger] = "他ユーザーのタスクにはアクセスできません。"
             redirect_to root_url
         end
     end
@@ -56,6 +57,7 @@ class TasksController < ApplicationController
     def set_task
         @task = Task.find_by(id: params[:id])
         if @task == nil
+            flash[:danger] = "存在しないタスクが選択されました。"
             redirect_to root_url
         end
     end
