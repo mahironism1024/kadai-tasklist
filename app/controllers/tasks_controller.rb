@@ -41,7 +41,6 @@ class TasksController < ApplicationController
     end
 
     def destroy
-        binding.pry
         @task.destroy
         
         flash[:success] = "タスクが削除されました"
